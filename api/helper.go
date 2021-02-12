@@ -1,13 +1,9 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
-
-	"github.com/bb4L/rpi-radio-alarm-go-library/types"
 )
 
 // Helper A struct to make the api accessible
@@ -32,38 +28,10 @@ func (helper *Helper) CheckHealth() error {
 	}
 
 	if res.StatusCode != 200 {
-		return fmt.Errorf("Could not get health, request hat status code %d", res.StatusCode)
+		return fmt.Errorf("Could not get health, request has status code %d", res.StatusCode)
 	}
 
 	return nil
-}
-
-func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
-	url := helper.AlarmURL + "/alarm"
-	req, err := http.NewRequest("GET", url, nil)
-	if err != nil {
-		return nil, fmt.Errorf("Could not create request for getAlarms")
-	}
-
-	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
-
-	if err != nil {
-		helper.Logger.Println(err)
-	}
-	// log.Println(res.body)
-
-	jsonData, _ := ioutil.ReadAll(res.Body)
-
-	var data []types.Alarm
-	err = json.Unmarshal(jsonData, &data)
-
-	if err != nil {
-		helper.Logger.Println(err)
-	}
-
-	// TODO: implement
-	return data, nil
 }
 
 func (helper *Helper) prepareAndDoRequest(req *http.Request) (*http.Response, error) {
