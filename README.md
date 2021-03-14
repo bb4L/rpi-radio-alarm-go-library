@@ -1,4 +1,5 @@
-[![GoDoc](https://pkg.go.dev/github.com/bb4L/rpi-radio-alarm-go-library?status.svg)](https://pkg.go.dev/github.com/bb4L/rpi-radio-alarm-go-library)
+[![Go Reference](https://pkg.go.dev/badge/github.com/bb4L/rpi-radio-alarm-go-library.svg)](https://pkg.go.dev/github.com/bb4L/rpi-radio-alarm-go-library)
+
 
 # rpi-radio-alarm-go-library
 
