@@ -69,9 +69,15 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 // ChangeAlarm change the alarm on the fiven index with the data of the passed instance
 func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm/" + strconv.Itoa(idx)
-	req, err := http.NewRequest("PUT", url, nil)
+	
+	byteAlarm, marshalError := json.Marshal(alarm)
+	if marshalError != nil {
+		return types.Alarm{}, fmt.Erorrf("Could not marshal alarm")
+	}
+	
+	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(byteAlarm))
 	if err != nil {
-		return types.Alarm{}, fmt.Errorf("Could not create request for GetAlarm")
+		return types.Alarm{}, fmt.Errorf("Could not create request for ChangeAlarm")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -88,6 +94,7 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return types.Alarm{}, fmt.Errorf("Could not unmarshal result")
 	}
 
 	return data, nil
