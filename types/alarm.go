@@ -1,3 +1,4 @@
+// Package types contains all the relevant structs/types for the library
 package types
 
 // Alarm struct to represent a alarm

@@ -1,3 +1,4 @@
+// Package constants contains some useful constants / helper functions
 package constants
 
 import (
@@ -5,6 +6,7 @@ import (
 	"sync"
 )
 
+// RpiLibraryLogger is a logger for the rpi-radio-alarm-library
 var (
 	RpiLibraryLogger *log.Logger
 	once             sync.Once

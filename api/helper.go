@@ -1,3 +1,4 @@
+// Package api contains the data / helper functions to interact with the api
 package api
 
 import (
