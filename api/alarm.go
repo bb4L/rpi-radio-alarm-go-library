@@ -25,6 +25,11 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
+	}
+	
+	if res.StatusCode != 200 {
+		return nil, fmt.ErrorF(string(data[:]))
 	}
 
 	jsonData, _ := ioutil.ReadAll(res.Body)
@@ -34,6 +39,7 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
 	}
 
 	return data, nil
@@ -44,7 +50,7 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm/" + strconv.Itoa(idx)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return types.Alarm{}, fmt.Errorf("Could not create request for GetAlarm")
+		return nil, fmt.Errorf("Could not create request for GetAlarm")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -52,6 +58,11 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
+	}
+	
+	if res.StatusCode != 200 {
+		return nil, fmt.ErrorF(string(data[:]))
 	}
 
 	jsonData, _ := ioutil.ReadAll(res.Body)
@@ -61,6 +72,7 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
 	}
 
 	return data, nil
@@ -85,6 +97,11 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
+	}
+	
+	if res.StatusCode != 200 {
+		return nil, fmt.ErrorF(string(data[:]))
 	}
 
 	jsonData, _ := ioutil.ReadAll(res.Body)
@@ -107,6 +124,7 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	jsonData, err := json.Marshal(alarm)
 	if err != nil {
 		log.Fatal(err)
+		return nil, err
 	}
 
 	req, err := http.NewRequest("POST", url, bytes.NewReader(jsonData))
@@ -118,6 +136,11 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	helper.Logger.Println(res)
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
+	}
+	
+	if res.StatusCode != 200 {
+		return nil, fmt.ErrorF(string(data[:]))
 	}
 
 	jsonData, _ = ioutil.ReadAll(res.Body)
@@ -126,6 +149,7 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	err = json.Unmarshal(jsonData, &data)
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
 	}
 
 	return data, nil
@@ -144,6 +168,11 @@ func (helper *Helper) DeleteAlarm(idx int) ([]types.Alarm, error) {
 	helper.Logger.Println(res)
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
+	}
+	
+	if res.StatusCode != 200 {
+		return nil, fmt.ErrorF(string(data[:]))
 	}
 
 	jsonData, _ := ioutil.ReadAll(res.Body)
@@ -152,6 +181,7 @@ func (helper *Helper) DeleteAlarm(idx int) ([]types.Alarm, error) {
 	err = json.Unmarshal(jsonData, &data)
 	if err != nil {
 		helper.Logger.Println(err)
+		return nil, err
 	}
 
 	return data, nil
