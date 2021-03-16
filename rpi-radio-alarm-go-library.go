@@ -1,3 +1,4 @@
+// Package rpiradioalarmgolibrary contains some main helper functions
 package rpiradioalarmgolibrary
 
 import (

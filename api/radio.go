@@ -23,15 +23,21 @@ func (helper *Helper) GetRadio() (types.Radio, error) {
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return types.Radio{}, err
 	}
 
 	jsonData, _ := ioutil.ReadAll(res.Body)
+
+	if res.StatusCode != 200 {
+		return types.Radio{}, fmt.Errorf(string(jsonData[:]))
+	}
 
 	var data types.Radio
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return types.Radio{}, err
 	}
 
 	return data, nil
@@ -54,20 +60,27 @@ func (helper *Helper) StartRadio() (types.Radio, error) {
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return types.Radio{}, err
 	}
 
 	jsonData, _ = ioutil.ReadAll(res.Body)
+
+	if res.StatusCode != 200 {
+		return types.Radio{}, fmt.Errorf(string(jsonData[:]))
+	}
+
 	var data types.Radio
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return types.Radio{}, err
 	}
 
 	return data, nil
 }
 
-// StopRadio starts the radio
+// StopRadio stops the radio
 func (helper *Helper) StopRadio() (types.Radio, error) {
 	values := map[string]string{"switch": "off"}
 	jsonData, err := json.Marshal(values)
@@ -75,7 +88,7 @@ func (helper *Helper) StopRadio() (types.Radio, error) {
 	url := helper.AlarmURL + "/radio"
 	req, err := http.NewRequest("POST", url, bytes.NewReader(jsonData))
 	if err != nil {
-		return types.Radio{}, fmt.Errorf("Could not create request for StartRadio")
+		return types.Radio{}, fmt.Errorf("Could not create request for StopRadio")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -83,14 +96,21 @@ func (helper *Helper) StopRadio() (types.Radio, error) {
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return types.Radio{}, err
 	}
 
 	jsonData, _ = ioutil.ReadAll(res.Body)
+
+	if res.StatusCode != 200 {
+		return types.Radio{}, fmt.Errorf(string(jsonData[:]))
+	}
+
 	var data types.Radio
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
 		helper.Logger.Println(err)
+		return types.Radio{}, err
 	}
 
 	return data, nil
