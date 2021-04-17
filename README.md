@@ -6,6 +6,7 @@
 ![GitHub](https://img.shields.io/github/license/bb4l/rpi-radio-alarm-go-library)
 ![GitHub Release Date](https://img.shields.io/github/release-date/bb4l/rpi-radio-alarm-go-library)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bb4l/rpi-radio-alarm-go-library)
+[![Go Report Card](https://goreportcard.com/badge/github.com/bb4L/rpi-radio-alarm-go-library)](https://goreportcard.com/report/github.com/bb4L/rpi-radio-alarm-go-library)
 ![GitHub issues](https://img.shields.io/github/issues-raw/bb4l/rpi-radio-alarm-go-library)
 ![Lines of code](https://img.shields.io/tokei/lines/github/bb4l/rpi-radio-alarm-go-library)
 
