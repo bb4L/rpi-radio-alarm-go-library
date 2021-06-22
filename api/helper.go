@@ -20,7 +20,7 @@ func (helper *Helper) CheckHealth() error {
 	url := helper.AlarmURL + "/health"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return fmt.Errorf("Could not create request for health")
+		return fmt.Errorf("could not create request for health")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -29,7 +29,7 @@ func (helper *Helper) CheckHealth() error {
 	}
 
 	if res.StatusCode != 200 {
-		return fmt.Errorf("Could not get health, request has status code %d", res.StatusCode)
+		return fmt.Errorf("could not get health, request has status code %d", res.StatusCode)
 	}
 
 	return nil

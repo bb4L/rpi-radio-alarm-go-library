@@ -17,7 +17,7 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return nil, fmt.Errorf("Could not create request for GetAlarms")
+		return nil, fmt.Errorf("could not create request for GetAlarms")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -50,7 +50,7 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm/" + strconv.Itoa(idx)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return types.Alarm{}, fmt.Errorf("Could not create request for GetAlarm")
+		return types.Alarm{}, fmt.Errorf("could not create request for GetAlarm")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -84,12 +84,12 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 
 	byteAlarm, marshalError := json.Marshal(alarm)
 	if marshalError != nil {
-		return types.Alarm{}, fmt.Errorf("Could not marshal alarm")
+		return types.Alarm{}, fmt.Errorf("could not marshal alarm")
 	}
 
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(byteAlarm))
 	if err != nil {
-		return types.Alarm{}, fmt.Errorf("Could not create request for ChangeAlarm")
+		return types.Alarm{}, fmt.Errorf("could not create request for ChangeAlarm")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -111,7 +111,7 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 
 	if err != nil {
 		helper.Logger.Println(err)
-		return types.Alarm{}, fmt.Errorf("Could not unmarshal result")
+		return types.Alarm{}, fmt.Errorf("could not unmarshal result")
 	}
 
 	return data, nil
@@ -129,7 +129,7 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 
 	req, err := http.NewRequest("POST", url, bytes.NewReader(jsonData))
 	if err != nil {
-		return nil, fmt.Errorf("Could not create request for AddAlarm")
+		return nil, fmt.Errorf("could not create request for AddAlarm")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
@@ -161,7 +161,7 @@ func (helper *Helper) DeleteAlarm(idx int) ([]types.Alarm, error) {
 
 	req, err := http.NewRequest("DELETE", url, nil)
 	if err != nil {
-		return nil, fmt.Errorf("Could not create request for AddAlarm")
+		return nil, fmt.Errorf("could not create request for AddAlarm")
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
