@@ -7,10 +7,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
+	"github.com/bb4L/rpi-radio-alarm-go-library/logging"
 	"github.com/bb4L/rpi-radio-alarm-go-library/types"
 )
 
-// GetRadio returns the radio status
+// Get the radio status
 func (helper *Helper) GetRadio() (types.Radio, error) {
 	url := helper.AlarmURL + "/radio"
 	req, err := http.NewRequest("GET", url, nil)
@@ -19,10 +20,10 @@ func (helper *Helper) GetRadio() (types.Radio, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Radio{}, err
 	}
 
@@ -36,14 +37,14 @@ func (helper *Helper) GetRadio() (types.Radio, error) {
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Radio{}, err
 	}
 
 	return data, nil
 }
 
-// StartRadio starts the radio
+// Start the radio
 func (helper *Helper) StartRadio() (types.Radio, error) {
 	values := map[string]string{"switch": "on"}
 	jsonData, _ := json.Marshal(values)
@@ -55,10 +56,10 @@ func (helper *Helper) StartRadio() (types.Radio, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Radio{}, err
 	}
 
@@ -72,14 +73,14 @@ func (helper *Helper) StartRadio() (types.Radio, error) {
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Radio{}, err
 	}
 
 	return data, nil
 }
 
-// StopRadio stops the radio
+// Stop the radio
 func (helper *Helper) StopRadio() (types.Radio, error) {
 	values := map[string]string{"switch": "off"}
 	jsonData, _ := json.Marshal(values)
@@ -91,10 +92,10 @@ func (helper *Helper) StopRadio() (types.Radio, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Radio{}, err
 	}
 
@@ -108,7 +109,7 @@ func (helper *Helper) StopRadio() (types.Radio, error) {
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Radio{}, err
 	}
 

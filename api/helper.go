@@ -1,21 +1,18 @@
-// Package api contains the data / helper functions to interact with the api
 package api
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 )
 
-// Helper A struct to make the api accessible
+// Struct to define the api settings being used
 type Helper struct {
 	AlarmURL          string
 	ExtraHeader       string
 	ExtreaHeaderValue string
-	Logger            *log.Logger
 }
 
-// CheckHealth checks wether the api is reachable and returns 200 on the health endpoint
+// Checks wether the api is reachable and returns 200 on the health endpoint
 func (helper *Helper) CheckHealth() error {
 	url := helper.AlarmURL + "/health"
 	req, err := http.NewRequest("GET", url, nil)

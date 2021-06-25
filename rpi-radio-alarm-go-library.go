@@ -1,36 +1,31 @@
-// Package rpiradioalarmgolibrary contains some main helper functions
+// Package rpiradioalarmgolibrary contains main helper functions
 package rpiradioalarmgolibrary
 
 import (
 	"os"
 
 	"github.com/bb4L/rpi-radio-alarm-go-library/api"
-	"github.com/bb4L/rpi-radio-alarm-go-library/constants"
+	"github.com/bb4L/rpi-radio-alarm-go-library/logging"
 	"github.com/joho/godotenv"
 )
 
-// GetHelperFromEnv returns the working helper object with the config loaded from a .env file
+// Returns the working helper object with the config loaded from a .env file
 func GetHelperFromEnv() api.Helper {
-
-	if constants.RpiLibraryLogger == nil {
-		constants.RpiLibraryLogger = constants.GetLogger()
-	}
-	logger := constants.RpiLibraryLogger
 
 	err := godotenv.Load()
 	if err != nil {
-		logger.Fatal("Error loading .env file")
+		logging.GetFatalLogger().Fatal("error loading .env file")
 	}
 
 	if os.Getenv("ALARMURL") == "" {
-		logger.Fatal("You have to specify ALARMURL in the .env")
+		logging.GetFatalLogger().Fatal("you have to specify ALARMURL in the .env")
 	}
 
-	helper := api.Helper{AlarmURL: os.Getenv("ALARMURL"), ExtraHeader: os.Getenv("EXTRAHEADER"), ExtreaHeaderValue: os.Getenv("EXTRAHEADERVALUE"), Logger: logger}
+	helper := api.Helper{AlarmURL: os.Getenv("ALARMURL"), ExtraHeader: os.Getenv("EXTRAHEADER"), ExtreaHeaderValue: os.Getenv("EXTRAHEADERVALUE")}
 
 	err = helper.CheckHealth()
 	if err != nil {
-		logger.Fatalf("Health check failed with: %s", err)
+		logging.GetFatalLogger().Fatalf("health check failed with: %s", err)
 	}
 
 	return helper

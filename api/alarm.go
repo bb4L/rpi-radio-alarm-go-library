@@ -1,3 +1,4 @@
+// Package api contains the data / helper functions to interact with the api
 package api
 
 import (
@@ -9,10 +10,11 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/bb4L/rpi-radio-alarm-go-library/logging"
 	"github.com/bb4L/rpi-radio-alarm-go-library/types"
 )
 
-// GetAlarms get all alarms
+// Get all alarms
 func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm"
 	req, err := http.NewRequest("GET", url, nil)
@@ -21,10 +23,10 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return nil, err
 	}
 
@@ -38,14 +40,14 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return nil, err
 	}
 
 	return data, nil
 }
 
-// GetAlarm get a specific alarm
+// Get a specific alarm by index
 func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm/" + strconv.Itoa(idx)
 	req, err := http.NewRequest("GET", url, nil)
@@ -54,10 +56,10 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Alarm{}, err
 	}
 
@@ -71,14 +73,14 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Alarm{}, err
 	}
 
 	return data, nil
 }
 
-// ChangeAlarm change the alarm on the fiven index with the data of the passed instance
+// Change the alarm on the given index with the data of the passed instance
 func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm/" + strconv.Itoa(idx)
 
@@ -93,10 +95,10 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Alarm{}, err
 	}
 
@@ -110,14 +112,14 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 	err = json.Unmarshal(jsonData, &data)
 
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return types.Alarm{}, fmt.Errorf("could not unmarshal result")
 	}
 
 	return data, nil
 }
 
-// AddAlarm Adds the given alarm
+// Adds the given alarm
 func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm"
 
@@ -133,9 +135,9 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return nil, err
 	}
 
@@ -148,14 +150,14 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	var data []types.Alarm
 	err = json.Unmarshal(jsonData, &data)
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return nil, err
 	}
 
 	return data, nil
 }
 
-// DeleteAlarm Delete the alarm with the given index
+// Delete the alarm with the given index
 func (helper *Helper) DeleteAlarm(idx int) ([]types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm/" + strconv.Itoa(idx)
 
@@ -165,9 +167,9 @@ func (helper *Helper) DeleteAlarm(idx int) ([]types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	helper.Logger.Println(res)
+	logging.GetInfoLogger().Println(res)
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return nil, err
 	}
 
@@ -180,7 +182,7 @@ func (helper *Helper) DeleteAlarm(idx int) ([]types.Alarm, error) {
 	var data []types.Alarm
 	err = json.Unmarshal(jsonData, &data)
 	if err != nil {
-		helper.Logger.Println(err)
+		logging.GetErrorLogger().Println(err)
 		return nil, err
 	}
 
