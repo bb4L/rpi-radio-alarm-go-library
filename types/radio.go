@@ -22,7 +22,8 @@ func (r *Radio) StartRadio() {
 }
 
 func (r *Radio) startRadioWithFunction(startRadioFunction func() (int, error)) {
-	var err error = nil
+	var err error
+
 	if startRadioFunction == nil {
 		logger.Println("using default start")
 		startRadioFunction = defaultStartRadio

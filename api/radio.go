@@ -19,7 +19,6 @@ func (helper *Helper) GetRadio() (types.Radio, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	logger.Println(res)
 
 	if err != nil {
 		logger.Println(err)
