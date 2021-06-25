@@ -9,23 +9,25 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// Returns the working helper object with the config loaded from a .env file
+var logger = logging.GetLogger("main", os.Stdout)
+
+// GetHelperFromEnv Returns the working helper object with the config loaded from a .env file
 func GetHelperFromEnv() api.Helper {
 
 	err := godotenv.Load()
 	if err != nil {
-		logging.GetFatalLogger().Fatal("error loading .env file")
+		logger.Fatal("error loading .env file")
 	}
 
 	if os.Getenv("ALARMURL") == "" {
-		logging.GetFatalLogger().Fatal("you have to specify ALARMURL in the .env")
+		logger.Fatal("you have to specify ALARMURL in the .env")
 	}
 
 	helper := api.Helper{AlarmURL: os.Getenv("ALARMURL"), ExtraHeader: os.Getenv("EXTRAHEADER"), ExtreaHeaderValue: os.Getenv("EXTRAHEADERVALUE")}
 
 	err = helper.CheckHealth()
 	if err != nil {
-		logging.GetFatalLogger().Fatalf("health check failed with: %s", err)
+		logger.Fatalf("health check failed with: %s", err)
 	}
 
 	return helper

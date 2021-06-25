@@ -7,22 +7,24 @@ import (
 	"github.com/bb4L/rpi-radio-alarm-go-library/logging"
 )
 
-// Struct to represent a radio
+var logger = logging.GetLogger("radio", os.Stdout)
+
+// Radio representing the state of the radio
 type Radio struct {
 	Running bool `yaml:"running" json:"isPlaying"`
 	Pid     int  `yaml:"pid"`
 }
 
-// Start the radio
+// StartRadio starts  the radio
 func (r *Radio) StartRadio() {
-	logging.GetInfoLogger().Println("start radio")
+	logger.Println("start radio")
 	r.startRadioWithFunction(nil)
 }
 
 func (r *Radio) startRadioWithFunction(startRadioFunction func() (int, error)) {
 	var err error = nil
 	if startRadioFunction == nil {
-		logging.GetInfoLogger().Println("using default start")
+		logger.Println("using default start")
 		startRadioFunction = defaultStartRadio
 	}
 
@@ -34,29 +36,29 @@ func (r *Radio) startRadioWithFunction(startRadioFunction func() (int, error)) {
 	r.Running = true
 
 	if err != nil {
-		logging.GetErrorLogger().Panicf("could not start radio %s", err)
+		logger.Panicf("could not start radio %s", err)
 	}
 
-	logging.GetInfoLogger().Printf("started radio process %d", r.Pid)
+	logger.Printf("started radio process %d", r.Pid)
 }
 
 func defaultStartRadio() (int, error) {
 	cmd := exec.Command("mplayer", "https://streamingp.shoutcast.com/hotmixradio-sunny-128.mp3", "volume 150")
-	cmd.Stdout = logging.GetInfoLogger().Writer()
-	cmd.Stderr = logging.GetErrorLogger().Writer()
+	cmd.Stdout = logger.Writer()
+	cmd.Stderr = logger.Writer()
 	err := cmd.Start()
 	return cmd.Process.Pid, err
 }
 
-// Stop the radio
+// StopRadio stops the radio
 func (r *Radio) StopRadio() error {
-	logging.GetInfoLogger().Printf("stop radio")
+	logger.Printf("stop radio")
 	return r.stopRadioWithFunction(nil)
 }
 
 func (r *Radio) stopRadioWithFunction(stopFunction func(int) error) (err error) {
 	if stopFunction == nil {
-		logging.GetInfoLogger().Println("using default stop")
+		logger.Println("using default stop")
 		stopFunction = defaultStopRadio
 	}
 
@@ -88,5 +90,6 @@ func defaultStopRadio(pid int) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }

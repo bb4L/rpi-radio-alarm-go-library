@@ -5,14 +5,14 @@ import (
 	"net/http"
 )
 
-// Struct to define the api settings being used
+// Helper struct to define the api settings being used
 type Helper struct {
 	AlarmURL          string
 	ExtraHeader       string
 	ExtreaHeaderValue string
 }
 
-// Checks wether the api is reachable and returns 200 on the health endpoint
+// CheckHealth checks wether the api is reachable and returns 200 on the health endpoint
 func (helper *Helper) CheckHealth() error {
 	url := helper.AlarmURL + "/health"
 	req, err := http.NewRequest("GET", url, nil)

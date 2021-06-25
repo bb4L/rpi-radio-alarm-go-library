@@ -1,7 +1,7 @@
 // Package types contains all the relevant structs/types for the library
 package types
 
-// Represent a alarm
+// Alarm containing all the relevant data
 type Alarm struct {
 	Name   string `yaml:"name" json:"name"`
 	Hour   int    `yaml:"hour" json:"hour"`
