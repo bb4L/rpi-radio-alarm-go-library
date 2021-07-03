@@ -1,4 +1,4 @@
-// Package rpiradioalarmgolibrary contains main helper functions
+// Package rpiradioalarmgolibrary contains main helper functions to load the helper from a .env file
 package rpiradioalarmgolibrary
 
 import (
@@ -9,11 +9,10 @@ import (
 	"github.com/joho/godotenv"
 )
 
-var logger = logging.GetLogger("main", os.Stdout)
+var logger = logging.GetLogger(os.Stdout, "main")
 
 // GetHelperFromEnv Returns the working helper object with the config loaded from a .env file
 func GetHelperFromEnv() api.Helper {
-
 	err := godotenv.Load()
 	if err != nil {
 		logger.Fatal("error loading .env file")

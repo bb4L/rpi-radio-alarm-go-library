@@ -12,7 +12,7 @@
 
 Wrapper library to communicate with the [rpi-radio-alarm-go](https://github.com/bb4L/rpi-radio-alarm-go)
 
-It uses `dotenv` this means a `.env` file is required.
+It uses `dotenv` this means a `.env` file can be used to load the relevant configurations.
 
 ```
 ALARMURL=URL-TO-ALARM  # https://example.com

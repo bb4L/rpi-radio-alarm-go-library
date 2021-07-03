@@ -47,6 +47,5 @@ func (helper *Helper) addHeadersToRequest(req *http.Request) *http.Request {
 	if helper.ExtraHeader != "" && helper.ExtreaHeaderValue != "" {
 		req.Header.Set(helper.ExtraHeader, helper.ExtreaHeaderValue)
 	}
-
 	return req
 }

@@ -11,14 +11,15 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/bb4L/rpi-radio-alarm-go-library/constants"
 	"github.com/bb4L/rpi-radio-alarm-go-library/logging"
 	"github.com/bb4L/rpi-radio-alarm-go-library/types"
 )
 
-var logger = logging.GetLogger("alarm", os.Stdout)
+var logger = logging.GetLogger(os.Stdout, constants.DefaultPrefix, "alarm")
 
 // GetAlarms gets all alarms
-func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
+func (helper *Helper) GetAlarms(withWritePermission bool) ([]types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -26,8 +27,6 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	logger.Println(res)
-
 	if err != nil {
 		logger.Println(err)
 		return nil, err
@@ -41,7 +40,6 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 
 	var data []types.Alarm
 	err = json.Unmarshal(jsonData, &data)
-
 	if err != nil {
 		logger.Println(err)
 		return nil, err
@@ -51,7 +49,7 @@ func (helper *Helper) GetAlarms() ([]types.Alarm, error) {
 }
 
 // GetAlarm gets a specific alarm by index
-func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
+func (helper *Helper) GetAlarm(idx int, withWritePermission bool) (types.Alarm, error) {
 	url := helper.AlarmURL + "/alarm/" + strconv.Itoa(idx)
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -59,8 +57,6 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	logger.Println(res)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Alarm{}, err
@@ -74,13 +70,17 @@ func (helper *Helper) GetAlarm(idx int) (types.Alarm, error) {
 
 	var data types.Alarm
 	err = json.Unmarshal(jsonData, &data)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Alarm{}, err
 	}
 
 	return data, nil
+}
+
+// SaveAlarm saves the given alarm on the given index
+func (helper *Helper) SaveAlarm(idx int, alarm types.Alarm) (types.Alarm, error) {
+	return helper.ChangeAlarm(alarm, idx)
 }
 
 // ChangeAlarm changes the alarm on the given index with the data of the passed instance
@@ -98,8 +98,6 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	logger.Println(res)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Alarm{}, err
@@ -113,7 +111,6 @@ func (helper *Helper) ChangeAlarm(alarm types.Alarm, idx int) (types.Alarm, erro
 
 	var data types.Alarm
 	err = json.Unmarshal(jsonData, &data)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Alarm{}, fmt.Errorf("could not unmarshal result")
@@ -138,7 +135,6 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	logger.Println(res)
 	if err != nil {
 		logger.Println(err)
 		return nil, err
@@ -170,7 +166,6 @@ func (helper *Helper) DeleteAlarm(idx int) ([]types.Alarm, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	logger.Println(res)
 	if err != nil {
 		logger.Println(err)
 		return nil, err

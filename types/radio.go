@@ -4,10 +4,11 @@ import (
 	"os"
 	"os/exec"
 
+	"github.com/bb4L/rpi-radio-alarm-go-library/constants"
 	"github.com/bb4L/rpi-radio-alarm-go-library/logging"
 )
 
-var logger = logging.GetLogger("radio", os.Stdout)
+var logger = logging.GetLogger(os.Stdout, constants.DefaultPrefix, "radio")
 
 // Radio representing the state of the radio
 type Radio struct {
@@ -40,7 +41,7 @@ func (r *Radio) startRadioWithFunction(startRadioFunction func() (int, error)) {
 		logger.Panicf("could not start radio %s", err)
 	}
 
-	logger.Printf("started radio process %d", r.Pid)
+	logger.Printf("started radio process %d\n", r.Pid)
 }
 
 func defaultStartRadio() (int, error) {
@@ -53,7 +54,7 @@ func defaultStartRadio() (int, error) {
 
 // StopRadio stops the radio
 func (r *Radio) StopRadio() error {
-	logger.Printf("stop radio")
+	logger.Printf("stop radio\n")
 	return r.stopRadioWithFunction(nil)
 }
 
@@ -87,7 +88,6 @@ func defaultStopRadio(pid int) error {
 	}
 
 	err = process.Kill()
-
 	if err != nil {
 		return err
 	}

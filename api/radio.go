@@ -11,7 +11,7 @@ import (
 )
 
 // GetRadio returns the radio status
-func (helper *Helper) GetRadio() (types.Radio, error) {
+func (helper *Helper) GetRadio(withWritePermission bool) (types.Radio, error) {
 	url := helper.AlarmURL + "/radio"
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -19,7 +19,6 @@ func (helper *Helper) GetRadio() (types.Radio, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Radio{}, err
@@ -33,13 +32,31 @@ func (helper *Helper) GetRadio() (types.Radio, error) {
 
 	var data types.Radio
 	err = json.Unmarshal(jsonData, &data)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Radio{}, err
 	}
 
 	return data, nil
+}
+
+// SaveRadio saves the radio and returns it
+func (helper *Helper) SaveRadio(radio types.Radio) (types.Radio, error) {
+	if radio.Running {
+		return helper.StartRadio()
+	} else {
+		return helper.StopRadio()
+	}
+}
+
+// SwitchRadio changes the radio to the state running passed as argument
+func (helper *Helper) SwitchRadio(running bool) (types.Radio, error) {
+	if running {
+		return helper.StartRadio()
+
+	} else {
+		return helper.StopRadio()
+	}
 }
 
 // StartRadio starts the radio
@@ -54,8 +71,6 @@ func (helper *Helper) StartRadio() (types.Radio, error) {
 	}
 
 	res, err := helper.prepareAndDoRequest(req)
-	logger.Println(res)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Radio{}, err
@@ -69,7 +84,6 @@ func (helper *Helper) StartRadio() (types.Radio, error) {
 
 	var data types.Radio
 	err = json.Unmarshal(jsonData, &data)
-
 	if err != nil {
 		logger.Println(err)
 		return types.Radio{}, err

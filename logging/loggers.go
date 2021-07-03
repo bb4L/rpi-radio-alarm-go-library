@@ -1,16 +1,15 @@
-// Package logging contains some logging utils
+// Package logging contains utils to get a logger with e standardized formatting
 package logging
 
 import (
 	"io"
 	"log"
+	"strings"
 )
 
-const commonPrefix = "[rpi-radio-alarm-library] "
-
-var prefixes = log.Ldate | log.Ltime | log.Lmsgprefix
+const prefixes = log.Ldate | log.Ltime | log.Lmsgprefix
 
 // GetLogger returns a logger with given additional prefix
-func GetLogger(place string, output io.Writer) *log.Logger {
-	return log.New(output, commonPrefix+"["+place+"] ", prefixes)
+func GetLogger(output io.Writer, places ...string) *log.Logger {
+	return log.New(output, "["+strings.Join(places, "."), prefixes)
 }
