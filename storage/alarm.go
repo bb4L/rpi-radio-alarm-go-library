@@ -34,8 +34,6 @@ func (storageHelper *Helper) GetAlarms(withWritePermission bool) ([]types.Alarm,
 	if err != nil {
 		return []types.Alarm{}, err
 	}
-	logger.Println("alarms")
-	logger.Println(data.Alarms)
 	return data.Alarms, nil
 
 }
