@@ -57,10 +57,10 @@ func (storageHelper *Helper) GetAlarm(idx int, withWritePermission bool) (types.
 // AddAlarm adds a given alarm
 func (storageHelper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 	storageHelper.getMutex().Lock()
-	defer storageHelper.getMutex().Unlock()
 
 	data, err := storageHelper.getStoredData()
 	if err != nil {
+		storageHelper.getMutex().Unlock()
 		return []types.Alarm{}, err
 	}
 
