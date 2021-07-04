@@ -63,6 +63,22 @@ func (storageHelper *Helper) getStoredData() (RpiRadioAlarmData, error) {
 	return data, err
 }
 
+// GetSettings returns the setings stored in the file
+func (storageHelper *Helper) GetSettings() (Settings, error) {
+	fileData, err := ioutil.ReadFile(dataFilename)
+	if err != nil {
+		panic(err)
+	}
+
+	var data RpiRadioAlarmData
+	source := []byte(fileData)
+	err = yaml.Unmarshal(source, &data)
+	if err != nil {
+		logger.Fatalf("error: %v", err)
+	}
+	return data.Settings, err
+}
+
 // SaveStoredData save the data to storage and releases the lock
 func (storageHelper *Helper) SaveStoredData(data RpiRadioAlarmData) {
 	outSource, err := yaml.Marshal(data)
