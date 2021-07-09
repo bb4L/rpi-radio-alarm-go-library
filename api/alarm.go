@@ -1,4 +1,3 @@
-// Package api contains the data / helper functions to interact with the api
 package api
 
 import (
@@ -28,11 +27,15 @@ func (helper *Helper) GetAlarms(withWritePermission bool) ([]types.Alarm, error)
 
 	res, err := helper.prepareAndDoRequest(req)
 	if err != nil {
-		logger.Println(err)
+		logger.Println("ERR:", err)
 		return nil, err
 	}
 
-	jsonData, _ := ioutil.ReadAll(res.Body)
+	jsonData, readErr := ioutil.ReadAll(res.Body)
+	if readErr != nil {
+		logger.Println("read ERR:", readErr)
+		return nil, readErr
+	}
 
 	if res.StatusCode != 200 {
 		return nil, fmt.Errorf(string(jsonData[:]))

@@ -1,3 +1,4 @@
+// Package storage implements a wrapper using the yaml file as "backend"
 package storage
 
 import (
