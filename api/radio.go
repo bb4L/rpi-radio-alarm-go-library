@@ -44,19 +44,16 @@ func (helper *Helper) GetRadio(withWritePermission bool) (types.Radio, error) {
 func (helper *Helper) SaveRadio(radio types.Radio) (types.Radio, error) {
 	if radio.Running {
 		return helper.StartRadio()
-	} else {
-		return helper.StopRadio()
 	}
+	return helper.StopRadio()
 }
 
 // SwitchRadio changes the radio to the state running passed as argument
 func (helper *Helper) SwitchRadio(running bool) (types.Radio, error) {
 	if running {
 		return helper.StartRadio()
-
-	} else {
-		return helper.StopRadio()
 	}
+	return helper.StopRadio()
 }
 
 // StartRadio starts the radio
