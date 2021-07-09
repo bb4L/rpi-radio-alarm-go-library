@@ -20,6 +20,7 @@ func (storageHelper *Helper) GetRadio(withWritePermission bool) (types.Radio, er
 
 // SaveRadio saves given radio as the radio resource
 func (storageHelper *Helper) SaveRadio(radio types.Radio) (types.Radio, error) {
+	logger.Printf("save radio %v\n", radio)
 	storageHelper.getMutex().Lock()
 	data, err := storageHelper.getStoredData()
 
