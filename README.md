@@ -12,13 +12,29 @@
 
 Wrapper library to communicate with the [rpi-radio-alarm-go](https://github.com/bb4L/rpi-radio-alarm-go)
 
-It uses `dotenv` this means a `.env` file is required.
+## Installation
+- get the package with `go get`
+- ensure `./rpi_data.yaml` is available (if using the helper interacting with storage)
+  ```yaml
+  settings:
+    port: 8000
+    run_api: true
+    run_telegram_bot: true
+    run_discord_bot: false
+  alarms:
+  - name: Test
+    hour: 7
+    minute: 0
+    days:
+    - 0
+    - 1
+    active: false
+  ...
+  radio:
+    running: false
+    pid: -1
 
-```
-ALARMURL=URL-TO-ALARM  # https://example.com
-EXTRAHEADER=EXTRA-HEADER # eg. ApiKey
-EXTRAHEADERVALUE=VALUE-FOR-THE-HEADER  # eg. password1234
-```
+  ```
 
 # License
 [GPLv3](LICENSE)
