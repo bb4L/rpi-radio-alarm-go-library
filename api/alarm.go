@@ -145,7 +145,7 @@ func (helper *Helper) AddAlarm(alarm types.Alarm) ([]types.Alarm, error) {
 
 	jsonData, _ = ioutil.ReadAll(res.Body)
 
-	if res.StatusCode != 200 {
+	if res.StatusCode != 201 {
 		return nil, fmt.Errorf(string(jsonData[:]))
 	}
 
