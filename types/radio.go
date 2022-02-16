@@ -19,10 +19,11 @@ type Radio struct {
 // StartRadio starts  the radio
 func (r *Radio) StartRadio() {
 	logger.Println("start radio")
-	r.startRadioWithFunction(nil)
+	r.StartRadioWithFunction(nil)
 }
 
-func (r *Radio) startRadioWithFunction(startRadioFunction func() (int, error)) {
+// StartRadioWithFunction exposes starting the radio with a custom function
+func (r *Radio) StartRadioWithFunction(startRadioFunction func() (int, error)) {
 	var err error
 
 	if startRadioFunction == nil {
@@ -55,10 +56,11 @@ func defaultStartRadio() (int, error) {
 // StopRadio stops the radio
 func (r *Radio) StopRadio() error {
 	logger.Printf("stop radio\n")
-	return r.stopRadioWithFunction(nil)
+	return r.StopRadioWithFunction(nil)
 }
 
-func (r *Radio) stopRadioWithFunction(stopFunction func(int) error) (err error) {
+// StopRadioWithFunction stops the radio with a custom stop function
+func (r *Radio) StopRadioWithFunction(stopFunction func(int) error) (err error) {
 	if stopFunction == nil {
 		logger.Println("using default stop")
 		stopFunction = defaultStopRadio
